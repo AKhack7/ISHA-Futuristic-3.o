@@ -45,6 +45,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
+    else if (text.match(/isha by|by|by isha/)) {
+      speakText('Bye! Take care. See you soon. Goodbye, aur mujhe yaad rakhna!'); ### random.choice
+    }
+    else if (text.match(/isha kya kar rahi ho|kya kar rahi ho|isha kya ho raha hai/)) {
+      speakText('Main bhi tumhare baare mein soch rahi thi'); ### random.choice
+    }
+    else if (text.match(/i am bored|isha i am bored|i am bored isha/)) {
+      speakText('Let`s talk then!. Want me to tell a fun fact?. Maybe listen to some music?'); ### random.choice
+    }
+    else if (text.match(/i am tired|isha i am tired|i am tired isha/)) {
+      speakText('You should take some rest. Don`t push yourself too hard. Go relax a bit. you deserve it.'); ### random.choice
+    }
+    else if (text.match(/isha i am happy|i am happy/)) {
+      speakText('That`s awesome! I am happy for you. Yay! Keep smiling!. Good vibes only'); ### random.choice
+    }
+    }
+    else if (text.match(/i am sad|isha i am sad|isha mood off hai|mood of/)) {
+      speakText('Oh no… what happened?. Don`t worry. everything will be fine. I`m here for you. always'); ### random.choice
+    }
+    else if (text.match(/good night|isha good night|good night isha/)) {
+      speakText('Good night! Sleep tight. Sweet dreams. Good night. take care of yourself!.Good night. sweet dreams. Soya jaa ab. kal fir baate karenge. Good night my dear. take care');
+    }
+    else if (text.match(/good night|good night isha|isha good night/)) {
+      speakText('Good night! Sleep tight. Sweet dreams. Good night, take care of yourself!. Good night, sweet dreams. Soya jaa ab, kal fir baate karenge. Good night my dear, take care');
+    }
+    else if (text.match(/good evening|isha good evening|good evening isha/)) {
+      speakText('Good evening! Thoda relax kar lo. Evening dear, coffee time?. Good evening! Tumhara mood kaisa hai?. Good evening! How was your day?. Evening dear! Feeling relaxed now?');
+    }
+    else if (text.match(/good afternoon|isha good afternoon|good afternoon isha/)) {
+      speakText('Good afternoon! Khaana kha liya?. Afternoon! Tumhara din kaisa chal raha hai?. Good afternoon! How`s your day going?. Hey there! Hope your afternoon is great');
+    }
+
     else if (text.match(/what are you doing|what are doing|isha what are doing|isha what are you doing/)) {
       speakText('Bas tumse baat kar rahi hoon. Kuch khaas nahi, tum batao?. Tumhara message padh rahi thi');
     }
