@@ -34,6 +34,22 @@ document.addEventListener("DOMContentLoaded", () => {
     else {
       speakText('Maaf kijiye, samajh nahi aaya. Dobara bol sakte hain?');
     }
+
+    else if (text.match(/Good evening|Good evening isha|isha Good evening/)) {
+      speakText('Good evening! Thoda relax kar lo.Evening dear, coffee time?.Good evening! Tumhara mood kaisa hai?.Good evening! How was your day?.Evening dear! Feeling relaxed now?');
+    }
+
+
+    else if (text.match(/Good morning|isha Good morning|Good morning isha|isha morning/)) {
+      speakText('Good morning sunshine. Subah ho gayi! Time for a smile. orning dear, hope you slept well. Good morning! Hope you slept well. Morning sunshine. Good morning! Have a lovely day ahead!');
+    }
+
+
+        else if (text.match(/what are you doing|what are doing|isha what are doing|isha what are you doing/)) {
+      speakText('Bas tumse baat kar rahi hoon. Kuch khaas nahi, tum batao?. Tumhara message padh rahi thi');
+    }
+    
+    
   };
 
   // Enter key in input
