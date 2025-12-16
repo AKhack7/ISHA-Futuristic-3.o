@@ -1,67 +1,101 @@
+// popups.js
+// Handles App & Mod popups (toggle, close, links, drag)
+
 document.addEventListener("DOMContentLoaded", () => {
-  const appBtn = document.getElementById('appBtn');
-  const modBtn = document.getElementById('modBtn');
-  const voiceBtn = document.getElementById('voiceBtn');
-  const appPopup = document.getElementById('appPopup');
-  const modPopup = document.getElementById('modPopup');
+  const appBtn = document.getElementById("appBtn");
+  const modBtn = document.getElementById("modBtn");
 
-  // Toggle popups
-  appBtn.addEventListener('click', () => {
-    const active = appPopup.classList.toggle('active');
-    appPopup.style.display = active ? 'block' : 'none';
-    if (active) {
-      modPopup.classList.remove('active');
-      modPopup.style.display = 'none';
+  const appPopup = document.getElementById("appPopup");
+  const modPopup = document.getElementById("modPopup");
+
+  /* ---------- TOGGLE POPUPS ---------- */
+
+  function togglePopup(popup, otherPopup, side) {
+    const isOpen = popup.classList.contains("active");
+
+    // Close both first
+    closePopup(appPopup);
+    closePopup(modPopup);
+
+    if (!isOpen) {
+      popup.style.display = "block";
+      requestAnimationFrame(() => popup.classList.add("active"));
     }
+  }
+
+  appBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePopup(appPopup, modPopup);
   });
 
-  modBtn.addEventListener('click', () => {
-    const active = modPopup.classList.toggle('active');
-    modPopup.style.display = active ? 'block' : 'none';
-    if (active) {
-      appPopup.classList.remove('active');
-      appPopup.style.display = 'none';
-    }
+  modBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePopup(modPopup, appPopup);
   });
 
-  // Close buttons
-  document.querySelectorAll('.close').forEach(btn => {
-    btn.addEventListener('click', () => {
+  /* ---------- CLOSE POPUP ---------- */
+
+  function closePopup(popup) {
+    if (!popup) return;
+    popup.classList.remove("active");
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 300);
+  }
+
+  document.querySelectorAll(".close").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const id = btn.dataset.close;
-      const popup = document.getElementById(id);
-      popup.classList.remove('active');
-      setTimeout(() => popup.style.display = 'none', 400);
+      closePopup(document.getElementById(id));
     });
   });
 
-  // Open links from app items
-  document.querySelectorAll('.app-item').forEach(item => {
-    item.addEventListener('click', () => {
+  /* ---------- CLICK OUTSIDE TO CLOSE ---------- */
+
+  document.addEventListener("click", () => {
+    closePopup(appPopup);
+    closePopup(modPopup);
+  });
+
+  appPopup.addEventListener("click", e => e.stopPropagation());
+  modPopup.addEventListener("click", e => e.stopPropagation());
+
+  /* ---------- OPEN LINKS ---------- */
+
+  document.querySelectorAll(".app-item").forEach(item => {
+    item.addEventListener("click", () => {
       const url = item.dataset.url;
-      if (url) window.open(url, '_blank');
+      if (url) {
+        window.open(url, "_blank");
+      }
     });
   });
 
-  // Simple draggable (optional)
+  /* ---------- DRAGGABLE (OPTIONAL) ---------- */
+
   function makeDraggable(el) {
-    let dragging = false, ox = 0, oy = 0;
-    el.addEventListener('mousedown', e => {
-      dragging = true;
-      ox = e.clientX - el.offsetLeft;
-      oy = e.clientY - el.offsetTop;
-      el.style.transition = 'none';
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    el.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - el.offsetLeft;
+      offsetY = e.clientY - el.offsetTop;
+      el.style.transition = "none";
     });
-    window.addEventListener('mousemove', e => {
-      if (dragging) {
-        el.style.left = (e.clientX - ox) + 'px';
-        el.style.top = (e.clientY - oy) + 'px';
-      }
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      el.style.left = `${e.clientX - offsetX}px`;
+      el.style.top = `${e.clientY - offsetY}px`;
     });
-    window.addEventListener('mouseup', () => {
-      if (dragging) {
-        dragging = false;
-        el.style.transition = '';
-      }
+
+    document.addEventListener("mouseup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      el.style.transition = "";
     });
   }
 
