@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-        else if (text.match(/what are you doing|what are doing|isha what are doing|isha what are you doing/)) {
+    else if (text.match(/what are you doing|what are doing|isha what are doing|isha what are you doing/)) {
       speakText('Bas tumse baat kar rahi hoon. Kuch khaas nahi, tum batao?. Tumhara message padh rahi thi');
     }
     
