@@ -4,65 +4,42 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ISHA Assistant</title>
-
-  <!-- Main CSS -->
+  <!-- External CSS -->
   <link rel="stylesheet" href="css/style.css" />
-
-  <!-- Orbitron font for digital time -->
-  <link href="https://fonts.googleapis.com/css2?familyOrbitron:wght@500;700&display=swap" rel="stylesheet">
+ 
+  <!-- Orbitron font for time (optional but recommended) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
   <div class="container" id="container">
-
-    <!-- Top Bar -->
     <div class="topbar">
-      <div class="title">
-        <span class="dot"></span> ISHA Assistant
-      </div>
-      <div class="version">v6.1 • Futuristic</div>
+      <div class="title"><span class="dot"></span> ISHA Assistant</div>
+      <div class="version">v 6.1. Futuristic</div>
     </div>
-
-    <!-- Main Stage -->
     <div class="stage">
       <canvas id="particles"></canvas>
-
-      <div class="core">
+      <div class="core" aria-hidden="true">
         <div class="aura"></div>
-
         <div class="ring">
           <div class="spin"></div>
           <div class="spin two"></div>
         </div>
-
         <div class="halo"></div>
-
         <div class="sphere">
           <div class="label">ISHA</div>
         </div>
       </div>
     </div>
-
-    <!-- Date & Time -->
-    <div class="datetime">
+    <div class="datetime" id="datetime">
       <div class="time" id="time">00:00:00</div>
-      <div class="date" id="date">Loading...</div>
+      <div class="date" id="date">Loading date...</div>
     </div>
-
-    <!-- Controls -->
     <div class="controls">
-      <input
-        type="text"
-        id="cmd"
-        class="input"
-        placeholder="Type command or say something..."
-        autocomplete="off"
-      />
-
+      <input class="input" id="cmd" placeholder="Type command or ask ISHA..." />
       <div class="right">
-        <button class="icon-btn" id="appBtn" title="Applications">🧩</button>
-        <button class="icon-btn" id="modBtn" title="Quick Links">⚙️</button>
-        <button class="icon-btn" id="voiceBtn" title="Voice Command">🎤</button>
+        <button class="icon-btn" id="appBtn" title="Apps">🧩</button>
+        <button class="icon-btn" id="modBtn" title="Mod">⚙️</button>
+        <button class="icon-btn" id="voiceBtn" title="Voice">🎤</button>
       </div>
     </div>
   </div>
@@ -70,35 +47,33 @@
   <!-- Applications Popup -->
   <div class="popup" id="appPopup">
     <div class="head">
-      <span>📱 Applications</span>
-      <span class="close" data-close="appPopup">✕</span>
+      <div>📱 Applications</div>
+      <div class="close" data-close="appPopup">✕</div>
     </div>
     <div class="popup-content">
-      <div class="app-item" data-url="https://github.com">GitHub</div>
-      <div class="app-item" data-url="https://suno.com">Suno</div>
-      <div class="app-item" data-url="https://you.com">You.com</div>
+      <div class="app-item" data-url="https://github.com">1. GitHub</div>
+      <div class="app-item" data-url="https://suno.com">2. Suno</div>
+      <div class="app-item" data-url="https://you.com">3. You.com</div>
     </div>
   </div>
 
   <!-- Mod Popup -->
   <div class="popup" id="modPopup">
     <div class="head">
-      <span>⚙️ Quick Links</span>
-      <span class="close" data-close="modPopup">✕</span>
+      <div>⚙️ Quick Links</div>
+      <div class="close" data-close="modPopup">✕</div>
     </div>
     <div class="popup-content">
-      <div class="app-item" data-url="https://google.com">Google</div>
-      <div class="app-item" data-url="https://youtube.com">YouTube</div>
-      <div class="app-item" data-url="https://grok.x.ai">Grok</div>
+      <div class="app-item" data-url="https://google.com">1. Google</div>
+      <div class="app-item" data-url="https://youtube.com">2. YouTube</div>
+      <div class="app-item" data-url="https://grok.x.ai">3. Grok</div>
     </div>
   </div>
 
-  <!-- JavaScript (ORDER MATTERS) -->
+  <!-- External JavaScript Files (speech.js removed - functionality merged into commandProcessor.js) -->
   <script src="js/particles.js"></script>
   <script src="js/datetime.js"></script>
   <script src="js/popups.js"></script>
-  <script src="js/speech.js"></script>
   <script src="js/commandProcessor.js"></script>
-
 </body>
 </html>
