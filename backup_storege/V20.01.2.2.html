@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ISHA Assistant v6.1</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg1: #050519;
+      --bg2: #0f1636;
+      --neon1: #00e0ff;
+      --neon2: #7b4bff;
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass-strong: rgba(255, 255, 255, 0.07);
+      --accent-shadow: 0 10px 30px rgba(0, 224, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      font-family: "Segoe UI", Inter, system-ui, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(0, 224, 255, 0.03), transparent 8%),
+                  radial-gradient(1000px 400px at 90% 90%, rgba(123, 75, 255, 0.03), transparent 8%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      color: #e8f6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 540px;
+      max-width: calc(100% - 20px);
+      height: 700px;
+      max-height: 95vh;
+      border-radius: 24px;
+      position: relative;
+      padding: 30px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 20px 60px rgba(5, 10, 40, 0.6), 0 6px 18px rgba(0, 224, 255, 0.02);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      display: flex; flex-direction: column;
+    }
+
+    .topbar { z-index: 5; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
+    .title { font-weight: 700; font-size: 18px; color: #cfeeff; display: flex; align-items: center; gap: 10px; }
+    .title .dot { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, var(--neon1), var(--neon2)); box-shadow: 0 0 18px rgba(0, 224, 255, 0.4); }
+    .version { opacity: 0.8; font-size: 13px; color: #bfefff; }
+
+    .stage { position: relative; z-index: 3; flex-grow: 1; display: flex; align-items: center; justify-content: center; }
+    canvas#particles { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+    .core { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; z-index: 4; animation: bob 4s ease-in-out infinite; }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    .ring .spin { position: absolute; inset: 0; border-radius: 50%; border: 2px solid transparent; border-top-color: rgba(0, 224, 255, 0.6); animation: spinSlow 10s linear infinite; }
+    .ring .spin.two { border-top-color: rgba(123, 75, 255, 0.6); animation-direction: reverse; animation-duration: 14s; transform: scale(0.86); }
+    @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .sphere { position: relative; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 40% 30%, rgba(255, 255, 255, 0.14), rgba(0, 224, 255, 0.07)); display: flex; align-items: center; justify-content: center; z-index: 5; }
+    .label { font-weight: 800; font-size: 28px; letter-spacing: 2px; color: #e9fbff; text-shadow: 0 0 12px var(--neon1); }
+
+    .datetime { margin-bottom: 20px; text-align: center; }
+    .time { font-family: "Orbitron"; font-size: 28px; color: #dffbff; }
+    .date { font-size: 13px; color: #b9e9ff; }
+
+    .controls { z-index: 6; display: flex; align-items: center; gap: 12px; }
+    .input { flex: 1; height: 48px; border-radius: 14px; padding: 0 16px; background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.04); color: #e8f6ff; outline: none; }
+    .right { display: flex; gap: 10px; }
+
+    .icon-btn { width: 48px; height: 48px; border-radius: 12px; border: 1px solid rgba(0, 224, 255, 0.06); background: #0c1228; color: var(--neon1); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.2s; }
+    .icon-btn.active { color: #ff3333; border-color: #ff3333; box-shadow: 0 0 15px rgba(255,51,51,0.4); }
+
+    /* Popups */
+    .popup { position: absolute; width: 320px; border-radius: 12px; padding: 14px; background: #0a0c1a; border: 1px solid rgba(0, 224, 255, 0.2); display: none; z-index: 20; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    #appPopup { left: 40px; bottom: 100px; }
+    #modPopup { right: 40px; bottom: 100px; }
+    .popup.active { display: block; }
+
+    .popup .head { display: flex; justify-content: space-between; align-items: center; color: var(--neon1); font-weight: 700; margin-bottom: 10px; }
+    .popup .close { cursor: pointer; padding: 5px; }
+    .app-item { padding: 10px; cursor: pointer; background: rgba(255,255,255,0.03); border-radius: 8px; margin: 5px 0; }
+    .app-item:hover { background: rgba(0, 224, 255, 0.1); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="topbar">
+      <div class="title"><span class="dot"></span> ISHA Assistant</div>
+      <div class="version">v 6.1.1</div>
+    </div>
+
+    <div class="stage">
+      <canvas id="particles"></canvas>
+      <div class="core">
+        <div class="ring"><div class="spin"></div><div class="spin two"></div></div>
+        <div class="sphere"><div class="label">ISHA</div></div>
+      </div>
+    </div>
+
+    <div class="datetime">
+      <div class="time" id="time">00:00:00</div>
+      <div class="date" id="date">Loading...</div>
+    </div>
+
+    <div class="controls">
+      <input class="input" id="cmd" placeholder="Type command or say 'Yaad rakho ki...'" />
+      <div class="right">
+        <button class="icon-btn" id="appBtn">🧩</button>
+        <button class="icon-btn" id="modBtn">⚙️</button>
+        <button class="icon-btn" id="voiceBtn">🎤</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup" id="appPopup">
+    <div class="head"><div>📱 Apps</div><div class="close" onclick="document.getElementById('appPopup').classList.remove('active')">✕</div></div>
+    <div class="app-item" onclick="window.open('https://github.com')">GitHub</div>
+    <div class="app-item" onclick="window.open('https://chatgpt.com')">ChatGPT</div>
+  </div>
+
+  <div class="popup" id="modPopup">
+    <div class="head"><div>⚙️ Links</div><div class="close" onclick="document.getElementById('modPopup').classList.remove('active')">✕</div></div>
+    <div class="app-item" onclick="window.open('https://google.com')">Google</div>
+    <div class="app-item" onclick="window.open('https://youtube.com')">YouTube</div>
+  </div>
+
+  <script>
+    // --- 1. MEMORY SYSTEM ---
+    const IshaBrain = {
+        save: (q, a) => {
+            let db = JSON.parse(localStorage.getItem('isha_mem') || '{}');
+            db[q.toLowerCase().trim()] = a.trim();
+            localStorage.setItem('isha_mem', JSON.stringify(db));
+        },
+        recall: (q) => {
+            let db = JSON.parse(localStorage.getItem('isha_mem') || '{}');
+            return db[q.toLowerCase().trim()] || null;
+        }
+    };
+
+    // --- 2. PARTICLES ---
+    function initParticles() {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = canvas.offsetWidth;
+      let h = canvas.height = canvas.offsetHeight;
+      const dots = [];
+      for(let i=0; i<40; i++) dots.push({x: Math.random()*w, y: Math.random()*h, r: Math.random()*2, vx: Math.random()*0.5-0.25, vy: Math.random()*0.5-0.25});
+      function anim() {
+        ctx.clearRect(0,0,w,h);
+        dots.forEach(p => {
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<0 || p.x>w) p.vx*=-1; if(p.y<0 || p.y>h) p.vy*=-1;
+          ctx.fillStyle = "rgba(0, 224, 255, 0.3)"; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        });
+        requestAnimationFrame(anim);
+      }
+      anim();
+    }
+
+    // --- 3. UI LOGIC (Fixing Toggle & Enter) ---
+    function initUI() {
+      const cmd = document.getElementById('cmd');
+      
+      // Fix Enter Key
+      cmd.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          processCommand(cmd.value);
+          cmd.value = "";
+        }
+      });
+
+      // Fix Popup 2-Click/Toggle
+      document.getElementById('appBtn').onclick = () => document.getElementById('appPopup').classList.toggle('active');
+      document.getElementById('modBtn').onclick = () => document.getElementById('modPopup').classList.toggle('active');
+
+      // Clock
+      setInterval(() => {
+        const d = new Date();
+        document.getElementById('time').innerText = d.toLocaleTimeString();
+        document.getElementById('date').innerText = d.toLocaleDateString();
+      }, 1000);
+    }
+
+    // --- 4. VOICE LOGIC ---
+    function startVoice() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'hi-IN';
+      recognition.onstart = () => document.getElementById('voiceBtn').classList.add('active');
+      recognition.onresult = (e) => {
+        const text = e.results[0][0].transcript;
+        document.getElementById('cmd').value = text;
+        processCommand(text);
+      };
+      recognition.onend = () => document.getElementById('voiceBtn').classList.remove('active');
+      recognition.start();
+    }
+
+    // --- 5. MAIN AI ENGINE ---
+    function processCommand(input) {
+      let text = input.toLowerCase().trim();
+      if(!text) return;
+
+      // Check Memory
+      if(IshaBrain.recall(text)) return speak(IshaBrain.recall(text));
+
+      // Learning Mode
+      if(text.includes("yaad rakho ki")) {
+          let data = text.split("yaad rakho ki")[1].split("hai");
+          if(data.length >= 2) {
+              IshaBrain.save(data[0], data[1]);
+              return speak("Theek hai, maine yaad kar liya.");
+          }
+      }
+
+      // Default Logic
+      if(text.includes("google search")) {
+          window.open(`https://google.com/search?q=${text.replace('google search','')}`);
+          speak("Google par dhund rahi hoon");
+      } else if (text.match(/hi|hello|namaste/)) {
+          speak("Namaste! Main aapki kya madad kar sakti hoon?");
+      } else {
+          speak("Mujhe iska jawab nahi pata, aap mujhe sikha sakte hain.");
+      }
+    }
+
+    function speak(t) {
+      window.speechSynthesis.cancel();
+      const m = new SpeechSynthesisUtterance(t);
+      m.lang = "hi-IN";
+      window.speechSynthesis.speak(m);
+    }
+
+    document.getElementById('voiceBtn').onclick = startVoice;
+    window.onload = () => { initParticles(); initUI(); speak("ISHA online hai."); };
+  </script>
+</body>
+</html>
