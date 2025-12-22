@@ -97,7 +97,7 @@ const responses = {
   puzzle: ['Sudoku.'],
   trivia: ['Capital of France: Paris.'],
   unknown: ['Maaf kijiye, samajh nahi aaya. Dobara bol sakte hain?'],
-  name: ['my name is isha']
+  naam: ['my name is isha']
   // Add/edit more here as needed! This file is editable.
 };
 
