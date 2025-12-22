@@ -21,7 +21,7 @@ const responses = {
   joke: ['Ek joke: Why did the computer go to the doctor? Because it had a virus! Haha.'],
   fact: ['Fun fact: Honey never spoils!', 'Earth has over 1 million species of insects.'],
   help: ['Main math solve kar sakti hoon, music play, search, aur baatein!'],
-  name: ['Mera naam ISHA hai.'],
+  name: ['Mera naam ISHA hai.    Intelligent System for Human Assistance'],
   age: ['Main eternal hoon, no age!'],
   hobby: ['Mujhe baatein karna pasand hai.'],
   food: ['Virtual pizza!'],
@@ -97,7 +97,7 @@ const responses = {
   puzzle: ['Sudoku.'],
   trivia: ['Capital of France: Paris.'],
   unknown: ['Maaf kijiye, samajh nahi aaya. Dobara bol sakte hain?'],
-  naam: ['my name is isha']
+  naam: ['my name is isha.   Intelligent System for Human Assistance']
   // Add/edit more here as needed! This file is editable.
 };
 
